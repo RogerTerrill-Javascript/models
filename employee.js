@@ -1,6 +1,6 @@
-import { Model } from './base';
+import { Base } from './base';
 
-export class Employee extends Model {
+export class Employee extends Base {
   get defaults() {
     return {
       firstName: '',
