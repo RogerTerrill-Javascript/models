@@ -22,10 +22,21 @@ export class SBK_Campaign extends Base {
       'LandingPage_Url',
     ];
   }
+
+  build() {
+    this.setAttributes({ keywords: [], negativeKeywords: [] });
+    this.setArrayAttributes(['creative_Asins', 'landingPage_Asins']);
+    this.generateNestedProperties();
+    return this;
+  }
 }
 
 export class SBK_CampaignsList extends List {
   get model() {
     return SBK_Campaign;
+  }
+
+  getCampaign(index) {
+    return this.models[index];
   }
 }
