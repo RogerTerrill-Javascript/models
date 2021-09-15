@@ -14,23 +14,41 @@ export class Payload {
     return this.campaigns;
   }
 
-  addKeywords(model) {
-    const keywords = this.keywords.modelFilter(
-      'campaignName',
-      model.getProperty('name')
-    );
-    return keywords.map((keyword) => keyword.getModel());
+  addToModel(prop, filterProp, modelProp) {
+    const objs = this[prop].modelFilter(filterProp, modelProp);
+    return objs.map((obj) => obj.removeProp([filterProp]).getModel());
+  }
+
+  addKeywords() {
+    this.campaigns.getModels().forEach((model) => {
+      model.addToArrayProp(
+        'keywords',
+        this.addToModel('keywords', 'campaignName', model.getProperty('name'))
+      );
+    });
+  }
+
+  addNegativeKeywords() {
+    this.campaigns.getModels().forEach((model) => {
+      model.addToArrayProp(
+        'negativeKeywords',
+        this.addToModel(
+          'negativeKeywords',
+          'campaignName',
+          model.getProperty('name')
+        )
+      );
+    });
   }
 
   build() {
-    this.campaigns.getModels().forEach((model) => {
-      model.addToArrayProp('keywords', this.addKeywords(model));
-    });
+    this.addKeywords();
+    this.addNegativeKeywords();
     return this;
   }
 
   show() {
-    console.log('Campaigns', this.campaigns.getModels()[0].show());
+    console.log('Campaigns', this.campaigns.getModels()[3].model.keywords);
     return this;
   }
 }

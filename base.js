@@ -54,6 +54,11 @@ export class Base {
     return this.model[prop];
   }
 
+  removeProp(props) {
+    props.forEach((prop) => delete this.model[prop]);
+    return this;
+  }
+
   addToArrayProp(prop, values) {
     this.model[prop].push(...values);
     return this;
